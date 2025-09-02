@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased w-dvw h-dvh`}>{children}</body>
+      <body className={`${inter.className} antialiased w-dvw h-dvh text-[14px]`}>{children}</body>
     </html>
   );
 }
