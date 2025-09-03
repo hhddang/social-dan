@@ -4,9 +4,13 @@ import { useState } from "react";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ILoginFormInput } from "@/types";
+import { useAuthStore } from "@/lib/stores/authStore";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const login = useAuthStore((store) => store.login);
+  const router = useRouter();
 
   const {
     register,
@@ -15,8 +19,13 @@ export default function LoginPage() {
   } = useForm<ILoginFormInput>();
 
   const onSubmit: SubmitHandler<ILoginFormInput> = (data) => {
-    // Submit form
-    console.log(data);
+    const { email, password } = data;
+    const status = login(email, password);
+    if (status) {
+      router.push("/");
+    } else {
+      alert("Incorrect email or password");
+    }
   };
 
   return (

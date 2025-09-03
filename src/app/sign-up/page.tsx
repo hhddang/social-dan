@@ -4,10 +4,14 @@ import { useState } from "react";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ISignUpFormInput } from "@/types";
+import { useAuthStore } from "@/lib/stores/authStore";
+import { useRouter } from "next/navigation";
 
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+  const signUp = useAuthStore((store) => store.signUp);
+  const router = useRouter();
 
   const {
     register,
@@ -19,8 +23,13 @@ export default function SignUpPage() {
   const password = watch("password");
 
   const onSubmit: SubmitHandler<ISignUpFormInput> = (data) => {
-    // Submit form
-    console.log(data);
+    const { email, username, password, repeatPassword } = data;
+    const status = signUp(email, username, password, repeatPassword);
+    if (status) {
+      router.push("/login");
+    } else {
+      alert("Something went wrong");
+    }
   };
 
   return (

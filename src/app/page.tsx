@@ -82,7 +82,7 @@ export default function HomePage() {
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-x-3">
                   <Link href="#">
-                    <Image src="https://avatar.iran.liara.run/public/39" width={48} height={48} alt="avatar" />
+                    <Image src="https://avatar.iran.liara.run/public/10" width={48} height={48} alt="avatar" />
                   </Link>
                   <span>Welcome, Dan</span>
                 </div>
@@ -90,7 +90,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* A post */}
+            {/* Posts */}
             {posts.map((post) => (
               <Post key={post.id} post={post} />
             ))}

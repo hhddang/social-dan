@@ -3,10 +3,13 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { GoBellFill, GoSearch, GoX } from "react-icons/go";
+import { useAuthStore } from "@/lib/stores/authStore";
 
 export const Header = () => {
   const searchParams = useSearchParams();
   const [search, setSearch] = useState("");
+  const user = useAuthStore((store) => store.user);
+  const logout = useAuthStore((store) => store.logout);
   const searchRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
 
@@ -39,6 +42,11 @@ export const Header = () => {
     searchRef.current?.focus();
   };
 
+  const handleLogout = () => {
+    logout();
+    router.push("/login");
+  };
+
   return (
     <header className="bg-white w-screen h-[var(--header-height)] flex justify-center items-center px-5 gap-x-6 fixed shadow z-10">
       <div className="max-w-[320px] grow">
@@ -67,13 +75,25 @@ export const Header = () => {
         </div>
       </div>
 
-      <div className="max-w-[320px] grow flex gap-3 justify-end">
+      <div className="max-w-[320px] grow flex gap-3 justify-end items-center">
         <button className="rounded-lg-full size-8 cursor-pointer">
           <GoBellFill className="size-8 text-sky-700" />
         </button>
-        <button>
-          <Image src="https://avatar.iran.liara.run/public/39" width={32} height={32} alt="avatar" />
-        </button>
+
+        {user ? (
+          <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
+            <div tabIndex={0} className="p-0 border-transparent bg-transparent hover:bg-transparent active:bg-transparent focus:bg-transparent">
+              <Image src={user?.avatarUrl ?? ""} width={32} height={32} alt="avatar"/>
+            </div>
+            <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+              <li>
+                <div onClick={handleLogout}>Lout out</div>
+              </li>
+            </ul>
+          </div>
+        ) : (
+          <div className="size-8 rounded-full bg-neutral-300"></div>
+        )}
       </div>
     </header>
   );
