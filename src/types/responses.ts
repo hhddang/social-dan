@@ -1,3 +1,4 @@
+import { IPost } from "./post";
 import { IUser } from "./user";
 
 interface IBaseResponse<T> {
@@ -11,3 +12,7 @@ export type ILoginResponse = IBaseResponse<{
 }>;
 
 export type ISignUpResponse = IBaseResponse<null>;
+
+export type IGetPostsResponse = IBaseResponse<{
+  posts: IPost[];
+}>;

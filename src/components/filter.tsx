@@ -1,5 +1,3 @@
-import { usePostStore } from "@/lib/stores";
-import { IPost } from "@/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -14,50 +12,7 @@ const COMMENT_COUNT_OPTIONS = [
   { label: "From 10 And More", value: "gte10" },
 ];
 
-const POST: IPost = {
-  id: "post",
-  creator: {
-    avatarUrl: "https://avatar.iran.liara.run/public/39",
-    name: "adam_sumia",
-  },
-  lastModifier: "1d",
-  title: "My First Hike in the Alps",
-  summaryTexts: ["I started my journey early in the morning and reached the base camp around 7 AM.", "The trail was steep but manageable, and the scenery made every step worth it."],
-  fullTexts: [
-    "I started my journey early in the morning and reached the base camp around 7 AM.",
-    "The trail was steep but manageable, and the scenery made every step worth it.",
-    "I met fellow hikers along the way and shared stories about our travels.",
-    "After a few hours of climbing, I reached the summit — the view was unforgettable.",
-  ],
-  media: ["login-background.svg", "login-background.svg"],
-  likeCount: 120,
-  commentCount: 45,
-  liked: false,
-  comments: [
-    {
-      writer: { avatarUrl: "https://avatar.iran.liara.run/public/29", name: "sovia" },
-      content: "Cool",
-      lastModifier: "1h",
-    },
-    {
-      writer: { avatarUrl: "https://avatar.iran.liara.run/public/23", name: "whin" },
-      content: "Awesome bro",
-      lastModifier: "3h",
-    },
-  ],
-};
-
-const randomPosts = (n: number) => {
-  const posts = [];
-  for (let i = 0; i < n; i++) {
-    const post = { ...POST, id: Math.round(Math.random() * 10000).toString() };
-    posts.push(post);
-  }
-  return posts;
-};
-
 export const Filter = () => {
-  const setPosts = usePostStore((store) => store.setPosts);
   const searchParams = useSearchParams();
   const [dates, setDates] = useState<string[]>([]);
   const [commentCount, setCommentCount] = useState<string | null>(null);
@@ -69,8 +24,6 @@ export const Filter = () => {
 
     setDates(urlDates);
     setCommentCount(urlComment);
-
-    
   }, [searchParams]);
 
   const updateURL = (newDates: string[], newComment: string | null) => {
@@ -89,8 +42,6 @@ export const Filter = () => {
     }
 
     router.push(`/search?${params.toString()}`);
-
-    setPosts(randomPosts(2));
   };
 
   const selectDate = (value: string) => {
