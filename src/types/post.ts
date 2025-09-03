@@ -1,7 +1,4 @@
-export interface IUser {
-  avatarUrl: string;
-  name: string;
-}
+import { IUser } from "./user";
 
 export interface IComment {
   writer: IUser;

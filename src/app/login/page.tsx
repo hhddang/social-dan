@@ -1,11 +1,13 @@
 "use client";
 import Link from "next/link";
+import axios from "axios";
 import { useState } from "react";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { ILoginFormInput } from "@/types";
+import { ILoginFormInput, ILoginRequest, ILoginResponse } from "@/types";
 import { useAuthStore } from "@/lib/stores/authStore";
 import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -18,14 +20,28 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm<ILoginFormInput>();
 
+  const loginMutation = useMutation({
+    mutationFn: async ({ username, password }: ILoginRequest) => axios.post<ILoginResponse>("/api/login", { username, password }).then(res => res.data),
+  });
+
   const onSubmit: SubmitHandler<ILoginFormInput> = (data) => {
-    const { email, password } = data;
-    const status = login(email, password);
-    if (status) {
-      router.push("/");
-    } else {
-      alert("Incorrect email or password");
-    }
+    const { username, password } = data;
+    loginMutation.mutate(
+      { username, password },
+      {
+        onSuccess: ({ status, data }) => {
+          if (status === "ok") {
+            login(data.user, data.token);
+            router.push("/");
+          } else {
+            alert("Incorrect email or password");
+          }
+        },
+        onError: () => {
+          alert("Something went wrong");
+        },
+      }
+    );
   };
 
   return (
@@ -38,18 +54,17 @@ export default function LoginPage() {
 
         <div className="p-6 flex flex-col gap-3 space-y-4">
           <div className="space-y-1">
-            <label>Email</label>
+            <label>Username</label>
             <div className="p-2 border rounded border-neutral-300 focus-within:border-black">
               <input
-                {...register("email", {
+                {...register("username", {
                   required: { value: true, message: "Field is required" },
-                  validate: (value) => (value.includes("@") && value.includes(".com")) || "Invalid email",
                 })}
-                placeholder="Your email"
+                placeholder="Your username"
                 className="w-full outline-none placeholder:text-neutral-300"
               />
             </div>
-            {errors.email && <div className="text-sm italic text-red-500">{errors.email.message}</div>}
+            {errors.username && <div className="text-sm italic text-red-500">{errors.username.message}</div>}
           </div>
 
           <div className="space-y-1">

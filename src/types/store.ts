@@ -1,4 +1,5 @@
 import { IComment, IPost } from "./post";
+import { IUser } from "./user";
 
 export interface IPostStore {
   unlikePost: (postId: string) => void;
@@ -11,13 +12,8 @@ export interface IPostStore {
 }
 
 export interface IAuthStore {
-  user: {
-    id: string;
-    name: string;
-    avatarUrl: string;
-  } | null;
+  user: IUser | null;
   token: string | null;
-  login: (email: string, password: string) => boolean;
-  signUp: (email: string, username: string, password: string, repeatPassword: string) => boolean;
+  login: (user: IUser, token: string) => void;
   logout: () => void;
 }
