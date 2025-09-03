@@ -1,16 +1,16 @@
 "use client";
 import Link from "next/link";
+import axios from "axios";
 import { useState } from "react";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { ISignUpFormInput } from "@/types";
-import { useAuthStore } from "@/lib/stores/authStore";
+import { ISignUpFormInput, ISignUpRequest, ISignUpResponse } from "@/types";
 import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
 
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
-  // const signUp = useAuthStore((store) => store.signUp);
   const router = useRouter();
 
   const {
@@ -22,15 +22,28 @@ export default function SignUpPage() {
 
   const password = watch("password");
 
+  const signUpMutation = useMutation({
+    mutationFn: async ({ email, username, password }: ISignUpRequest) => axios.post<ISignUpResponse>("/api/sign-up", { email, username, password }).then((res) => res.data),
+  });
+
   const onSubmit: SubmitHandler<ISignUpFormInput> = (data) => {
-    const { email, username, password, repeatPassword } = data;
-    // const status = signUp(email, username, password, repeatPassword);
-    const status = true;
-    if (status) {
-      router.push("/login");
-    } else {
-      alert("Something went wrong");
-    }
+    const { email, username, password } = data;
+
+    signUpMutation.mutate(
+      { email, username, password },
+      {
+        onSuccess: ({ status }) => {
+          if (status === "ok") {
+            router.push("/login");
+          } else {
+            alert("Email or username in use");
+          }
+        },
+        onError: () => {
+          alert("Something went wrong");
+        },
+      }
+    );
   };
 
   return (

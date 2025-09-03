@@ -9,3 +9,5 @@ export type ILoginResponse = IBaseResponse<{
   token: string;
   user: IUser;
 }>;
+
+export type ISignUpResponse = IBaseResponse<null>;

@@ -1,8 +1,8 @@
-import { ILoginResponse, IUser } from "@/types";
+import { ILoginRequest, ILoginResponse, IUser } from "@/types";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { username, password } = await req.json();
+  const { username, password } = (await req.json()) as ILoginRequest;
 
   if (username === "admin" && password === "admin") {
     const fakeToken = "fake-jwt-token";
