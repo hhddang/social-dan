@@ -4,8 +4,10 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { Footer, Header, PostDetail, Filter, PostList } from "@/components";
 import { useSearchParams } from "next/navigation";
+import { usePostStore } from "@/lib/stores";
 
 export default function SearchPage() {
+  const postDetail = usePostStore((store) => store.postDetail);
   const postListRef = useRef<HTMLDivElement | null>(null);
   const searchParams = useSearchParams();
 
@@ -40,7 +42,7 @@ export default function SearchPage() {
           <Footer />
         </div>
       </main>
-      <PostDetail />
+      {postDetail && <PostDetail />}
     </>
   );
 }

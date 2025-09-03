@@ -1,4 +1,4 @@
-import { IPost } from "./post";
+import { IComment, IPost } from "./post";
 import { IUser } from "./user";
 
 interface IBaseResponse<T> {
@@ -15,4 +15,8 @@ export type ISignUpResponse = IBaseResponse<null>;
 
 export type IGetPostsResponse = IBaseResponse<{
   posts: IPost[];
+}>;
+
+export type IGetCommentsResponse = IBaseResponse<{
+  comments: IComment[];
 }>;

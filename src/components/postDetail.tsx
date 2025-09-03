@@ -1,47 +1,42 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GoKebabHorizontal, GoPaperAirplane } from "react-icons/go";
 import { Post } from "./post";
 import { usePostStore } from "@/lib/stores/postStore";
 import { Avatar } from "./avatar";
-import { IComment } from "@/types";
-
-const COMMENT: IComment = {
-  writer: { avatarUrl: "https://avatar.iran.liara.run/public/13", name: "Dan" },
-  content: "New comment ~ ",
-  lastModifier: "2d",
-};
-
-const randomComments = (n: number) => {
-  const comments = [];
-  for (let i = 0; i < n; i++) {
-    const comment = { ...COMMENT, content: COMMENT.content + i };
-    comments.push(comment);
-  }
-  return comments;
-};
+import { IComment, IGetCommentsResponse } from "@/types";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { useAuthStore } from "@/lib/stores/authStore";
 
 export const PostDetail = () => {
-  const postDetail = usePostStore((store) => store.postDetail);
+  const user = useAuthStore((store) => store.user)!;
+  const postDetail = usePostStore((store) => store.postDetail)!;
   const setPostDetail = usePostStore((store) => store.setPostDetail);
   const addComment = usePostStore((store) => store.addComment);
-  const commentCount = postDetail?.commentCount ?? 0;
-  const comments = postDetail?.comments ?? [];
+  const { commentCount, comments } = postDetail;
   const yourCommentRef = useRef<HTMLTextAreaElement | null>(null);
-  const latestCommentRef = useRef<HTMLDivElement | null>(null);
-  const earliestCommentRef = useRef<HTMLDivElement | null>(null);
   const commentListRef = useRef<HTMLDivElement | null>(null);
-  // const commentRef = (index:number) => {
-  //   if(index === 0) {
-  //     return latestCommentRef
-  //   }
-  //   if(index === comments.length - 1){
-  //     return earliestCommentRef
-  //   }
-  //   return undefined
-  // }
   const [yourComment, setYourComment] = useState("");
+  const [offset, setOffset] = useState(0);
+
+  const { data: newComments, refetch } = useQuery({
+    queryKey: ["comments", offset],
+    queryFn: async () => {
+      const res = await axios.get<IGetCommentsResponse>("/api/comments").then((res) => res.data);
+      return res.data.comments;
+    },
+  });
+
+  useEffect(() => {
+    if (newComments && newComments.length > 0) {
+      setPostDetail({ ...postDetail, comments: [...postDetail.comments, ...newComments] });
+      requestAnimationFrame(() => {
+        commentListRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+      });
+    }
+  }, [newComments]);
 
   const focusYourComment = () => {
     yourCommentRef.current?.focus();
@@ -58,20 +53,17 @@ export const PostDetail = () => {
     if (!postDetail || !yourComment.trim()) return;
 
     addComment(postDetail.id, {
-      writer: { avatarUrl: "", name: "Dan" },
+      writer: user!,
       content: yourComment,
-      lastModifier: "1d",
+      lastModifier: "1m",
     });
     setYourComment("");
     commentListRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const viewMoreComments = () => {
-    if (!postDetail) return;
-    setPostDetail({ ...postDetail, comments: [...postDetail.comments, ...randomComments(5)] });
-    requestAnimationFrame(() => {
-      commentListRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-    });
+  const viewMoreComments = async () => {
+    setOffset((prev) => prev + 10);
+    refetch();
   };
 
   return (
@@ -83,7 +75,7 @@ export const PostDetail = () => {
               <Post post={postDetail} fullContent customClickComment={() => focusYourComment()}>
                 <div className="flex gap-3">
                   <Link href="#">
-                    <Image src="https://avatar.iran.liara.run/public/39" width={36} height={36} alt="avatar" />
+                    <Image src={user.avatarUrl} width={36} height={36} alt="avatar" />
                   </Link>
                   <div className="flex-1 flex items-start gap-3 border border-neutral-300 focus-within:border-black rounded-xl px-3 py-2">
                     <textarea
@@ -103,7 +95,7 @@ export const PostDetail = () => {
                 {comments.length > 0 && (
                   <div ref={commentListRef} className="space-y-4 scroll-mt-[calc(100vh/2)] scroll-mb-6">
                     {comments.map(({ writer, content, lastModifier }, index) => (
-                      <div ref={index === 0 ? latestCommentRef : index === comments.length - 1 ? earliestCommentRef : undefined} key={index} className={`flex gap-3 ${index === 0 ? "" : ""}`}>
+                      <div key={index} className={`flex gap-3 ${index === 0 ? "" : ""}`}>
                         <Avatar url={writer.avatarUrl} />
                         <div className="flex-1 flex flex-col gap-1 rounded-xl px-3 py-2 bg-neutral-100">
                           <div className="w-full flex justify-between items-center">

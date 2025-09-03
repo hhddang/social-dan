@@ -34,7 +34,7 @@ const generatePosts = (no: number): IPost[] => {
 };
 
 export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
+  // const { searchParams } = new URL(req.url);
   // const content = searchParams.get("content") || "";
   // const dates = searchParams.get("dates")?.split(",") || [];
   // const commentCount = parseInt(searchParams.get("commentCount") || "0");

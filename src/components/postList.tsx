@@ -12,6 +12,9 @@ export const PostList = () => {
   const setPosts = usePostStore((store) => store.setPosts);
   const skeletonPostRef = useRef<HTMLDivElement | null>(null);
   const searchParams = useSearchParams();
+  const contentSearch = searchParams.get("content") || "";
+  const datesFilter = searchParams.get("dates") || "";
+  const commentCountFilter = searchParams.get("commentCount") || "";
   const {
     data: newPosts,
     refetch,
@@ -19,7 +22,7 @@ export const PostList = () => {
   } = useQuery({
     queryKey: ["posts"],
     queryFn: async () => {
-      const res = await axios.get<IGetPostsResponse>("/api/posts").then((res) => res.data);
+      const res = await axios.get<IGetPostsResponse>(`/api/posts?content=${contentSearch}&dates=${datesFilter}@commentCount=${commentCountFilter}`).then((res) => res.data);
       return res.data.posts;
     },
   });
@@ -35,7 +38,7 @@ export const PostList = () => {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !isFetching) {
+        if (entries[0].isIntersecting) {
           refetch();
         }
       },

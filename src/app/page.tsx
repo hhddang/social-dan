@@ -2,8 +2,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Footer, FriendPanel, Header, PostDetail, PostList } from "@/components";
+import { usePostStore } from "@/lib/stores";
 
 export default function HomePage() {
+  const postDetail = usePostStore((store) => store.postDetail);
   return (
     <>
       <Header />
@@ -32,7 +34,7 @@ export default function HomePage() {
         </div>
       </main>
 
-      <PostDetail />
+      {postDetail && <PostDetail />}
     </>
   );
 }
