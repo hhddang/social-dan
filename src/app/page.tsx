@@ -1,11 +1,10 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { GoBellFill, GoSearch } from "react-icons/go";
-import { Post, PostDetail } from "@/components";
-import { IComment, IPost } from "@/types";
-import { usePostStore } from "@/lib/stores/store";
+import { useEffect, useRef } from "react";
+import { Footer, FriendPanel, Header, Post, PostDetail } from "@/components";
+import { IPost } from "@/types";
+import { usePostStore } from "@/lib/stores/postStore";
 
 const POST: IPost = {
   id: "post",
@@ -72,154 +71,11 @@ export default function HomePage() {
 
   return (
     <>
-      <header className="bg-white w-screen h-[var(--header-height)] flex justify-center items-center px-5 gap-x-6 fixed shadow z-10">
-        <div className="max-w-[320px] grow">
-          <Link href="/" className="font-bold text-2xl text-sky-700">
-            SocialDan
-          </Link>
-        </div>
-
-        <div className="max-w-[670px] flex-1 flex justify-center">
-          <div className="px-3 py-2 border rounded-lg border-neutral-300 focus-within:border-black min-w-[400px] flex gap-2 items-center">
-            <GoSearch />
-            <input type="text" placeholder="Search content" className="outline-none flex-1 text-" />
-          </div>
-        </div>
-
-        <div className="max-w-[320px] grow flex gap-3 justify-end">
-          <button className="rounded-lg-full size-8 cursor-pointer">
-            <GoBellFill className="size-8 text-sky-700" />
-          </button>
-          <button>
-            <Image src="https://avatar.iran.liara.run/public/39" width={32} height={32} alt="avatar" />
-          </button>
-        </div>
-      </header>
+      <Header />
 
       <main className="relative top-[var(--header-height)] w-screen h-[calc(100vh_-_var(--header-height))] overflow-y-auto bg-sky-100 scrollbar-thin">
         <div className="flex gap-x-6 px-5 items-start justify-center">
-          <aside className="max-w-[320px] max-h-[calc(100vh_-_var(--header-height)_-_48px)] grow pt-[24px] sticky top-0">
-            <div className="flex max-h-[inherit] flex-col bg-white px-2 py-4 gap-3 rounded-lg">
-              <div className="px-2 w-full flex justify-between items-center">
-                <p className="font-bold">Find friend</p>
-                <div className="flex- gap-3">
-                  <button className="size-8 rounded-lg bg-sky-700 grid place-items-center cursor-pointer">
-                    <GoSearch className="text-white size-5" />
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex-1 overflow-y-auto scrollbar-thin">
-                <div className="flex flex-col">
-                  <div className="w-full h-12 rounded-lg cursor-pointer hover:bg-neutral-300 flex gap-2 items-center p-2">
-                    <div className="indicator">
-                      <span className="indicator-item status status-success"></span>
-                      <Image src="https://avatar.iran.liara.run/public/39" width={32} height={32} alt="avatar" />
-                    </div>
-                    <span>Adam</span>
-                  </div>
-                  <div className="w-full h-12 rounded-lg cursor-pointer hover:bg-neutral-300 flex gap-2 items-center p-2">
-                    <div className="indicator">
-                      <span className="indicator-item status status-success"></span>
-                      <Image src="https://avatar.iran.liara.run/public/39" width={32} height={32} alt="avatar" />
-                    </div>
-                    <span>Adam</span>
-                  </div>
-                  <div className="w-full h-12 rounded-lg cursor-pointer hover:bg-neutral-300 flex gap-2 items-center p-2">
-                    <div className="indicator">
-                      <span className="indicator-item status status-success"></span>
-                      <Image src="https://avatar.iran.liara.run/public/39" width={32} height={32} alt="avatar" />
-                    </div>
-                    <span>Adam</span>
-                  </div>
-                  <div className="w-full h-12 rounded-lg cursor-pointer hover:bg-neutral-300 flex gap-2 items-center p-2">
-                    <div className="indicator">
-                      <span className="indicator-item status status-success"></span>
-                      <Image src="https://avatar.iran.liara.run/public/39" width={32} height={32} alt="avatar" />
-                    </div>
-                    <span>Adam</span>
-                  </div>
-                  <div className="w-full h-12 rounded-lg cursor-pointer hover:bg-neutral-300 flex gap-2 items-center p-2">
-                    <div className="indicator">
-                      <span className="indicator-item status status-success"></span>
-                      <Image src="https://avatar.iran.liara.run/public/39" width={32} height={32} alt="avatar" />
-                    </div>
-                    <span>Adam</span>
-                  </div>
-                  <div className="w-full h-12 rounded-lg cursor-pointer hover:bg-neutral-300 flex gap-2 items-center p-2">
-                    <div className="indicator">
-                      <span className="indicator-item status status-success"></span>
-                      <Image src="https://avatar.iran.liara.run/public/39" width={32} height={32} alt="avatar" />
-                    </div>
-                    <span>Adam</span>
-                  </div>
-                  <div className="w-full h-12 rounded-lg cursor-pointer hover:bg-neutral-300 flex gap-2 items-center p-2">
-                    <div className="indicator">
-                      <span className="indicator-item status status-success"></span>
-                      <Image src="https://avatar.iran.liara.run/public/39" width={32} height={32} alt="avatar" />
-                    </div>
-                    <span>Adam</span>
-                  </div>
-                  <div className="w-full h-12 rounded-lg cursor-pointer hover:bg-neutral-300 flex gap-2 items-center p-2">
-                    <div className="indicator">
-                      <span className="indicator-item status status-success"></span>
-                      <Image src="https://avatar.iran.liara.run/public/39" width={32} height={32} alt="avatar" />
-                    </div>
-                    <span>Adam</span>
-                  </div>
-                  <div className="w-full h-12 rounded-lg cursor-pointer hover:bg-neutral-300 flex gap-2 items-center p-2">
-                    <div className="indicator">
-                      <span className="indicator-item status status-success"></span>
-                      <Image src="https://avatar.iran.liara.run/public/39" width={32} height={32} alt="avatar" />
-                    </div>
-                    <span>Adam</span>
-                  </div>
-                  <div className="w-full h-12 rounded-lg cursor-pointer hover:bg-neutral-300 flex gap-2 items-center p-2">
-                    <div className="indicator">
-                      <span className="indicator-item status status-success"></span>
-                      <Image src="https://avatar.iran.liara.run/public/39" width={32} height={32} alt="avatar" />
-                    </div>
-                    <span>Adam</span>
-                  </div>
-                  <div className="w-full h-12 rounded-lg cursor-pointer hover:bg-neutral-300 flex gap-2 items-center p-2">
-                    <div className="indicator">
-                      <span className="indicator-item status status-success"></span>
-                      <Image src="https://avatar.iran.liara.run/public/39" width={32} height={32} alt="avatar" />
-                    </div>
-                    <span>Adam</span>
-                  </div>
-                  <div className="w-full h-12 rounded-lg cursor-pointer hover:bg-neutral-300 flex gap-2 items-center p-2">
-                    <div className="indicator">
-                      <span className="indicator-item status status-success"></span>
-                      <Image src="https://avatar.iran.liara.run/public/39" width={32} height={32} alt="avatar" />
-                    </div>
-                    <span>Adam</span>
-                  </div>
-                  <div className="w-full h-12 rounded-lg cursor-pointer hover:bg-neutral-300 flex gap-2 items-center p-2">
-                    <div className="indicator">
-                      <span className="indicator-item status status-success"></span>
-                      <Image src="https://avatar.iran.liara.run/public/39" width={32} height={32} alt="avatar" />
-                    </div>
-                    <span>Adam</span>
-                  </div>
-                  <div className="w-full h-12 rounded-lg cursor-pointer hover:bg-neutral-300 flex gap-2 items-center p-2">
-                    <div className="indicator">
-                      <span className="indicator-item status status-success"></span>
-                      <Image src="https://avatar.iran.liara.run/public/39" width={32} height={32} alt="avatar" />
-                    </div>
-                    <span>Adam</span>
-                  </div>
-                  <div className="w-full h-12 rounded-lg cursor-pointer hover:bg-neutral-300 flex gap-2 items-center p-2">
-                    <div className="indicator">
-                      <span className="indicator-item status status-success"></span>
-                      <Image src="https://avatar.iran.liara.run/public/39" width={32} height={32} alt="avatar" />
-                    </div>
-                    <span>Adam</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </aside>
+          <FriendPanel />
 
           <section className="max-w-[670px] flex-1 py-6 space-y-5">
             <div className="bg-white rounded-lg p-4 ">
@@ -243,25 +99,7 @@ export default function HomePage() {
             <div ref={skeletonPostRef} className="skeleton h-[800px]"></div>
           </section>
 
-          <aside className="max-w-[320px] max-h-[calc(100vh_-_var(--header-height)_-_48px)] grow pt-[24px] sticky top-0">
-            <div className="max-h-[inherit] overflow-y-auto space-y-4 scrollbar-none">
-              <div className="h-[300px] bg-neutral-300 grid place-items-center">Some Ad</div>
-              <div className="h-[300px] bg-neutral-300 grid place-items-center">Some Ad</div>
-              <footer className="space-y-1">
-                <div>
-                  <Link href="#" className="underline">
-                    About Us
-                  </Link>
-                </div>
-                <div>
-                  <Link href="#" className="underline">
-                    Help Center
-                  </Link>
-                </div>
-                <p>A demo social website</p>
-              </footer>
-            </div>
-          </aside>
+          <Footer />
         </div>
       </main>
 

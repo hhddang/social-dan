@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { GoKebabHorizontal, GoPaperAirplane } from "react-icons/go";
 import { Post } from "./post";
-import { usePostStore } from "@/lib/stores/store";
+import { usePostStore } from "@/lib/stores/postStore";
 import { Avatar } from "./avatar";
 import { IComment } from "@/types";
 

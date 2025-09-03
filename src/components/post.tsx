@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { GoKebabHorizontal, GoThumbsup, GoComment } from "react-icons/go";
 import { Avatar } from "./avatar";
-import { usePostStore } from "@/lib/stores/store";
+import { usePostStore } from "@/lib/stores/postStore";
 
 export interface IPostProps {
   post: IPost;
