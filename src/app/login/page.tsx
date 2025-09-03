@@ -8,6 +8,7 @@ import { ILoginFormInput, ILoginRequest, ILoginResponse } from "@/types";
 import { useAuthStore } from "@/lib/stores/authStore";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
+import Cookies from "js-cookie";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +22,7 @@ export default function LoginPage() {
   } = useForm<ILoginFormInput>();
 
   const loginMutation = useMutation({
-    mutationFn: async ({ username, password }: ILoginRequest) => axios.post<ILoginResponse>("/api/login", { username, password }).then(res => res.data),
+    mutationFn: async ({ username, password }: ILoginRequest) => axios.post<ILoginResponse>("/api/login", { username, password }).then((res) => res.data),
   });
 
   const onSubmit: SubmitHandler<ILoginFormInput> = (data) => {
@@ -31,6 +32,7 @@ export default function LoginPage() {
       {
         onSuccess: ({ status, data }) => {
           if (status === "ok") {
+            Cookies.set("token", data.token);
             login(data.user, data.token);
             router.push("/");
           } else {

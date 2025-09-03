@@ -4,6 +4,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { GoBellFill, GoSearch, GoX } from "react-icons/go";
 import { useAuthStore } from "@/lib/stores/authStore";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 export const Header = () => {
   const searchParams = useSearchParams();
@@ -42,7 +45,13 @@ export const Header = () => {
     searchRef.current?.focus();
   };
 
+  const logoutMutation = useMutation({
+    mutationFn: async () => axios.post("/api/logout").then(res => res.data),
+  });
+
   const handleLogout = () => {
+    logoutMutation.mutate();
+    Cookies.remove('token');
     logout();
     router.push("/login");
   };
