@@ -1,36 +1,41 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GoBellFill, GoSearch, GoX } from "react-icons/go";
 
 export const Header = () => {
   const searchParams = useSearchParams();
-  const content = searchParams.get("content");
-  const [searchText, setSearchText] = useState(content ?? "");
+  const [search, setSearch] = useState("");
   const searchRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
 
-  const updateSearchText = (text: string) => {
-    setSearchText(text);
+  useEffect(() => {
+    setSearch(searchParams.get("content") || "");
+  }, [searchParams]);
+
+  const updateSearch = (text: string) => {
+    setSearch(text);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      search();
+      searchPosts();
     }
   };
 
-  const search = () => {
-    if (searchText) {
-      router.push(`/search?content=${searchText}`);
+  const searchPosts = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (search) {
+      params.set("content", search);
     } else {
-      router.push("/search");
+      params.delete("content");
     }
+    router.push(`/search?${params.toString()}`);
   };
 
   const resetSearchText = () => {
-    setSearchText("");
+    setSearch("");
     searchRef.current?.focus();
   };
 
@@ -48,13 +53,13 @@ export const Header = () => {
           <input
             ref={searchRef}
             type="text"
-            value={searchText}
-            onChange={(e) => updateSearchText(e.target.value)}
+            value={search}
+            onChange={(e) => updateSearch(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Search content"
             className="outline-none flex-1 text-"
           />
-          {searchText && (
+          {search && (
             <button onClick={resetSearchText} className="bg-neutral-200 size-4 rounded-full grid place-items-center cursor-pointer">
               <GoX />
             </button>
