@@ -5,10 +5,10 @@ import { GoKebabHorizontal, GoPaperAirplane, GoX } from "react-icons/go";
 import { Post } from "./post";
 import { usePostStore } from "@/lib/stores/postStore";
 import { Avatar } from "./avatar";
-import { IComment, IGetCommentsResponse } from "@/types";
+import { IGetCommentsResponse } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useAuthStore } from "@/lib/stores/authStore";
+import { useAuthStore } from "@/lib/stores";
 
 export const PostDetail = () => {
   const user = useAuthStore((store) => store.user)!;

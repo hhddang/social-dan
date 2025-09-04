@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { GoBellFill, GoReply, GoSearch, GoX } from "react-icons/go";
-import { useAuthStore } from "@/lib/stores/authStore";
+import { useAuthStore } from "@/lib/stores";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import Cookies from "js-cookie";

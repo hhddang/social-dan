@@ -5,7 +5,7 @@ import { useState } from "react";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ILoginFormInput, ILoginRequest, ILoginResponse } from "@/types";
-import { useAuthStore } from "@/lib/stores/authStore";
+import { useAuthStore } from "@/lib/stores";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import Cookies from "js-cookie";
