@@ -21,7 +21,7 @@ export const Header = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!user || !token) {
+    if (!user && !token) {
       const newToken = Cookies.get("token")!; // To access this page must have token
       // Extract user from token
       const getUser = (token: string): IUser => {
