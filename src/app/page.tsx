@@ -14,7 +14,7 @@ export default function HomePage() {
         <div className="flex gap-x-6 px-5 items-start justify-center">
           <FriendPanel />
 
-          <section className="max-w-[670px] flex-1 py-6 space-y-5">
+          <section className="max-w-[700px] flex-1 py-6 space-y-5">
             <div className="bg-white rounded-lg p-4 ">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-x-3">

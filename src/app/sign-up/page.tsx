@@ -47,8 +47,8 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="size-full bg-cover bg-center bg-[url(/login-background.svg)] grid place-items-center">
-      <form onSubmit={handleSubmit(onSubmit)} className="bg-neutral-50 rounded min-w-[500px] shadow">
+    <div className="size-full bg-cover bg-center bg-[url(/login-background.svg)] grid place-items-center p-2">
+      <form onSubmit={handleSubmit(onSubmit)} className="bg-neutral-50 rounded w-full max-w-[500px] md:shadow">
         <div className="p-6 flex flex-col gap-3 items-center">
           <div className="font-bold text-2xl">Sign up for Social Dan</div>
           <div>A demo social media website by Dan</div>

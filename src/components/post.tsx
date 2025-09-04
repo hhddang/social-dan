@@ -76,7 +76,7 @@ export const Post = ({ post, fullContent, customClickComment, children }: IPostP
       {/* Reaction & command */}
       <div className="flex gap-x-4">
         <div className="flex gap-1 items-center">
-          <GoThumbsup className="size-6" /> {likeCount} {liked ? "liked" : "nah"}
+          <GoThumbsup className="size-6" /> {likeCount}
         </div>
         <div className="flex gap-1 items-center">
           <GoComment className="size-6" /> {commentCount}

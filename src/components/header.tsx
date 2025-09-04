@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { GoBellFill, GoSearch, GoX } from "react-icons/go";
+import { GoBellFill, GoReply, GoSearch, GoX } from "react-icons/go";
 import { useAuthStore } from "@/lib/stores/authStore";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
@@ -11,6 +11,7 @@ import Cookies from "js-cookie";
 export const Header = () => {
   const searchParams = useSearchParams();
   const [search, setSearch] = useState("");
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
   const user = useAuthStore((store) => store.user);
   const logout = useAuthStore((store) => store.logout);
   const searchRef = useRef<HTMLInputElement | null>(null);
@@ -46,26 +47,33 @@ export const Header = () => {
   };
 
   const logoutMutation = useMutation({
-    mutationFn: async () => axios.post("/api/logout").then(res => res.data),
+    mutationFn: async () => axios.post("/api/logout").then((res) => res.data),
   });
 
   const handleLogout = () => {
     logoutMutation.mutate();
-    Cookies.remove('token');
+    Cookies.remove("token");
     logout();
     router.push("/login");
   };
 
+  const openMobileSearch = () => {
+    setShowMobileSearch(true);
+    requestAnimationFrame(() => {
+      searchRef.current?.focus();
+    });
+  };
+
   return (
     <header className="bg-white w-screen h-[var(--header-height)] flex justify-center items-center px-5 gap-x-6 fixed shadow z-10">
-      <div className="max-w-[320px] grow">
+      <div className={`max-w-[320px] grow ${showMobileSearch ? "hidden" : "block"} md:block`}>
         <Link href="/" className="font-bold text-2xl text-sky-700">
           SocialDan
         </Link>
       </div>
 
-      <div className="max-w-[670px] flex-1 flex justify-center">
-        <div className="px-3 py-2 border rounded-lg border-neutral-300 focus-within:border-black min-w-[400px] flex gap-2 items-center">
+      <div className="max-w-[700px] flex-1 flex justify-center gap-x-3">
+        <div className={`px-3 py-2 border rounded-lg border-neutral-300 focus-within:border-black flex-1 gap-2 items-center ${showMobileSearch ? "flex" : "hidden"} md:flex`}>
           <GoSearch />
           <input
             ref={searchRef}
@@ -82,9 +90,20 @@ export const Header = () => {
             </button>
           )}
         </div>
+        {showMobileSearch && (
+          <button onClick={() => setShowMobileSearch(false)} className="rounded-lg-full size-8 cursor-pointer md:hidden">
+            <GoReply className="size-8 text-sky-700" />
+          </button>
+        )}
       </div>
 
-      <div className="max-w-[320px] grow flex gap-3 justify-end items-center">
+      <div className={`max-w-[320px] grow gap-3 justify-end items-center ${showMobileSearch ? "hidden" : "flex"} md:flex`}>
+        {!showMobileSearch && (
+          <button onClick={() => openMobileSearch()} className="rounded-lg-full size-8 cursor-pointer md:hidden">
+            <GoSearch className="size-8 text-sky-700" />
+          </button>
+        )}
+
         <button className="rounded-lg-full size-8 cursor-pointer">
           <GoBellFill className="size-8 text-sky-700" />
         </button>
@@ -92,7 +111,7 @@ export const Header = () => {
         {user ? (
           <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
             <div tabIndex={0} className="p-0 border-transparent bg-transparent hover:bg-transparent active:bg-transparent focus:bg-transparent">
-              <Image src={user?.avatarUrl ?? ""} width={32} height={32} alt="avatar"/>
+              <Image src={user?.avatarUrl ?? ""} width={32} height={32} alt="avatar" />
             </div>
             <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
               <li>

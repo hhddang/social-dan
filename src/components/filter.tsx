@@ -58,7 +58,7 @@ export const Filter = () => {
   };
 
   return (
-    <aside className="max-w-[320px] h-[calc(100vh_-_var(--header-height)_-_48px)] grow pt-[24px] sticky top-0 hidden md:block">
+    <aside className="w-full md:h-[calc(100vh_-_var(--header-height)_-_48px)] md:grow pt-[24px] md:sticky md:top-0 md:max-w-[320px]">
       <div className="flex h-full  flex-col bg-white p-4 gap-3 rounded-lg">
         <div className="flex-1 overflow-y-auto scrollbar-thin">
           <div className="space-y-5">
