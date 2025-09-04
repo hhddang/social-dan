@@ -7,15 +7,30 @@ import { useAuthStore } from "@/lib/stores";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { IUser } from "@/types";
 
 export const Header = () => {
   const searchParams = useSearchParams();
   const [search, setSearch] = useState("");
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const user = useAuthStore((store) => store.user);
+  const token = useAuthStore((store) => store.token);
+  const login = useAuthStore((store) => store.login);
   const logout = useAuthStore((store) => store.logout);
   const searchRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    if (!user || !token) {
+      const newToken = Cookies.get("token")!; // To access this page must have token
+      // Extract user from token
+      const getUser = (token: string): IUser => {
+        return { id: "1", name: "admin", email: "admin@gmail.com", avatarUrl: "https://avatar.iran.liara.run/public/1" };
+      };
+      const newUser = getUser(newToken);
+      login(newUser, newToken);
+    }
+  }, [user, token]);
 
   useEffect(() => {
     setSearch(searchParams.get("content") || "");
