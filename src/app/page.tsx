@@ -1,8 +1,9 @@
 "use client";
 import { Avatar, Footer, FriendPanel, Header, PostList } from "@/components";
 import { useAuthStore } from "@/lib/stores";
+import { Suspense } from "react";
 
-export default function HomePage() {
+function HomePage() {
   const user = useAuthStore((store) => store.user);
   return (
     <>
@@ -34,3 +35,11 @@ export default function HomePage() {
     </>
   );
 }
+
+const SuspensePage = () => (
+  <Suspense>
+    <HomePage />
+  </Suspense>
+);
+
+export default SuspensePage;

@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { Footer, Header, Filter, PostList } from "@/components";
 import { useSearchParams } from "next/navigation";
 
-export default function SearchPage() {
+function SearchPage() {
   const mainRef = useRef<HTMLElement | null>(null);
   const searchParams = useSearchParams();
 
@@ -29,3 +29,11 @@ export default function SearchPage() {
     </>
   );
 }
+
+const SuspensePage = () => (
+  <Suspense>
+    <SearchPage />
+  </Suspense>
+);
+
+export default SuspensePage;
