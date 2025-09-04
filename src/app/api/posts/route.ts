@@ -34,17 +34,17 @@ const generatePosts = (no: number): IPost[] => {
 };
 
 export async function GET(req: Request) {
-  // const { searchParams } = new URL(req.url);
+  const { searchParams } = new URL(req.url);
+  const limit = parseInt(searchParams.get("limit") || "0");
   // const content = searchParams.get("content") || "";
   // const dates = searchParams.get("dates")?.split(",") || [];
   // const commentCount = parseInt(searchParams.get("commentCount") || "0");
   // const offset = parseInt(searchParams.get("offset") || "0");
-  // const limit = parseInt(searchParams.get("limit") || "0");
 
   const response: IGetPostsResponse = {
     status: "ok",
     data: {
-      posts: generatePosts(10),
+      posts: generatePosts(limit),
     },
   };
   return NextResponse.json(response);

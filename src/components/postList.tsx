@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Post } from "@/components";
 import { IGetPostsResponse } from "@/types";
 import { usePostStore } from "@/lib/stores/postStore";
@@ -10,19 +10,19 @@ import { useSearchParams } from "next/navigation";
 export const PostList = () => {
   const posts = usePostStore((store) => store.posts);
   const setPosts = usePostStore((store) => store.setPosts);
-  const skeletonPostRef = useRef<HTMLDivElement | null>(null);
+  const loadingRef = useRef<HTMLDivElement | null>(null);
   const searchParams = useSearchParams();
   const contentSearch = searchParams.get("content") || "";
   const datesFilter = searchParams.get("dates") || "";
   const commentCountFilter = searchParams.get("commentCount") || "";
-  const {
-    data: newPosts,
-    refetch,
-    isFetching,
-  } = useQuery({
-    queryKey: ["posts"],
+  const [offset, setOffset] = useState(0);
+  const limit = 5;
+  const { data: newPosts, isFetching } = useQuery({
+    queryKey: ["posts", offset],
     queryFn: async () => {
-      const res = await axios.get<IGetPostsResponse>(`/api/posts?content=${contentSearch}&dates=${datesFilter}@commentCount=${commentCountFilter}`).then((res) => res.data);
+      const res = await axios
+        .get<IGetPostsResponse>(`/api/posts?content=${contentSearch}&dates=${datesFilter}&commentCount=${commentCountFilter}&offset=${offset}&limit=${limit}`)
+        .then((res) => res.data);
       return res.data.posts;
     },
   });
@@ -34,35 +34,33 @@ export const PostList = () => {
   }, [newPosts]);
 
   useEffect(() => {
-    if (!skeletonPostRef.current) return;
-
+    if (!loadingRef.current) return;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
-          refetch();
+        if (entries[0].isIntersecting && !isFetching) {
+          setOffset((prev) => prev + limit);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0 }
     );
-
-    observer.observe(skeletonPostRef.current);
+    observer.observe(loadingRef.current);
     return () => observer.disconnect();
-  }, [isFetching, refetch]);
+  }, [isFetching]);
 
   useEffect(() => {
     setPosts([]);
-    refetch();
+    setOffset(0);
   }, [searchParams]);
 
   return (
     <>
-      {/* Posts */}
       {posts.map((post) => (
         <Post key={post.id} post={post} />
       ))}
 
-      {/* Skeleton */}
-      <div ref={skeletonPostRef} className="skeleton h-[800px]"></div>
+      <div ref={loadingRef} className="w-full text-center">
+        <span className="loading loading-spinner loading-xl"></span>
+      </div>
     </>
   );
 };

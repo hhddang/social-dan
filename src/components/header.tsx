@@ -88,7 +88,7 @@ export const Header = () => {
       </div>
 
       <div className="max-w-[700px] flex-1 flex justify-center gap-x-3">
-        <div className={`px-3 py-2 border rounded-lg border-neutral-300 focus-within:border-black flex-1 gap-2 items-center ${showMobileSearch ? "flex" : "hidden"} md:flex`}>
+        <div className={`w-full max-w-[500px] px-3 py-2 border rounded-lg border-neutral-300 focus-within:border-black flex-1 gap-2 items-center ${showMobileSearch ? "flex" : "hidden"} md:flex`}>
           <GoSearch />
           <input
             ref={searchRef}

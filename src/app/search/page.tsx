@@ -21,7 +21,7 @@ export default function SearchPage() {
         <div className="flex gap-x-6 px-5 items-start justify-center flex-col md:flex-row">
           <Filter />
 
-          <section className="max-w-[700px] flex-1 py-6 space-y-5 scroll-mt-0">
+          <section className="w-full max-w-[700px] flex-1 py-6 space-y-5 scroll-mt-0">
             <PostList />
           </section>
 
