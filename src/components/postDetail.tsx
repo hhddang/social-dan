@@ -74,7 +74,7 @@ export const PostDetail = () => {
     <>
       {showPostDetail && (
         <>
-          <section onClick={() => setShowPostDetail(false)} className="fixed inset-0 z-20 bg-white m-0">
+          <section onClick={() => setShowPostDetail(false)} className="fixed inset-0 z-20 bg-white md:bg-[rgba(0,0,0,.5)] m-0">
             <div className="w-fit h-full overflow-y-auto scrollbar-none py-5 mx-auto">
               <div onClick={(e) => e.stopPropagation()}>
                 {postDetail && (
