@@ -1,16 +1,15 @@
 "use client";
-import { Avatar, Footer, FriendPanel, Header, PostDetail, PostList } from "@/components";
-import { useAuthStore, usePostStore } from "@/lib/stores";
+import { Avatar, Footer, FriendPanel, Header, PostList } from "@/components";
+import { useAuthStore } from "@/lib/stores";
 
 export default function HomePage() {
   const user = useAuthStore((store) => store.user);
-  const postDetail = usePostStore((store) => store.postDetail);
   return (
     <>
       <Header />
 
       <main className="relative top-[var(--header-height)] w-screen h-[calc(100vh_-_var(--header-height))] overflow-y-auto bg-sky-100 scrollbar-thin">
-        <div className="flex gap-x-6 px-5 items-start justify-center">
+        <div className="flex gap-x-6 px-2 items-start justify-center">
           <FriendPanel />
 
           <section className="w-full max-w-[700px] flex-1 py-6 space-y-5">
@@ -32,8 +31,6 @@ export default function HomePage() {
           <Footer />
         </div>
       </main>
-
-      {postDetail && <PostDetail />}
     </>
   );
 }

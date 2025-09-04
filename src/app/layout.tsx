@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased w-dvw h-dvh text-[14px]`}>
+      <body className={`${inter.className} antialiased w-dvw h-svh text-[14px]`}>
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>

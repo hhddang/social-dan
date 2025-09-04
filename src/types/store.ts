@@ -2,13 +2,16 @@ import { IComment, IPost } from "./post";
 import { IUser } from "./user";
 
 export interface IPostStore {
-  unlikePost: (postId: string) => void;
-  postDetail: IPost | null;
   posts: IPost[];
-  setPostDetail: (post: IPost | null) => void;
+  postDetail: IPost | null;
+  showPostDetail: boolean;
   setPosts: (posts: IPost[]) => void;
+  setPostDetail: (post: IPost | null) => void;
+  setShowPostDetail: (value: boolean) => void;
   likePost: (postId: string) => void;
-  addComment: (postId: string, comment: IComment) => void;
+  unlikePost: (postId: string) => void;
+  sendComment: (postId: string, comment: IComment) => void;
+  loadComments: (postId: string, comments: IComment[]) => void;
 }
 
 export interface IAuthStore {

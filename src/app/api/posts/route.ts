@@ -1,12 +1,12 @@
 import { IGetPostsResponse, IPost } from "@/types";
 import { NextResponse } from "next/server";
 
-const generatePosts = (no: number): IPost[] => {
+const generatePosts = (offset: number, no: number): IPost[] => {
   const posts = [];
   for (let i = 0; i < no; i++) {
-    const id = Math.round(Math.random() * 100000).toString();
+    const order = offset + i + 1;
     const post: IPost = {
-      id,
+      id: order.toString(),
       creator: {
         id: "2",
         email: "adam@gmail.com",
@@ -14,7 +14,7 @@ const generatePosts = (no: number): IPost[] => {
         avatarUrl: "https://avatar.iran.liara.run/public/2",
       },
       lastModifier: "2h",
-      title: `My #${id} post. Check it out~`,
+      title: `Checkout my #${order} post!`,
       summaryTexts: ["I started my journey early in the morning and reached the base camp around 7 AM.", "The trail was steep but manageable, and the scenery made every step worth it."],
       fullTexts: [
         "I started my journey early in the morning and reached the base camp around 7 AM.",
@@ -36,15 +36,15 @@ const generatePosts = (no: number): IPost[] => {
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const limit = parseInt(searchParams.get("limit") || "0");
+  const offset = parseInt(searchParams.get("offset") || "0");
   // const content = searchParams.get("content") || "";
   // const dates = searchParams.get("dates")?.split(",") || [];
   // const commentCount = parseInt(searchParams.get("commentCount") || "0");
-  // const offset = parseInt(searchParams.get("offset") || "0");
 
   const response: IGetPostsResponse = {
     status: "ok",
     data: {
-      posts: generatePosts(limit),
+      posts: generatePosts(offset, limit),
     },
   };
   return NextResponse.json(response);

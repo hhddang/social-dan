@@ -18,11 +18,20 @@ export const Post = ({ post, fullContent, customClickComment, children }: IPostP
   const likePost = usePostStore((store) => store.likePost);
   const unlikePost = usePostStore((store) => store.unlikePost);
   const setPostDetail = usePostStore((store) => store.setPostDetail);
+  const setShowPostDetail = usePostStore((store) => store.setShowPostDetail);
   const handleLikePost = () => {
     if (liked === true) {
       unlikePost(id);
     } else {
       likePost(id);
+    }
+  };
+  const handleComment = () => {
+    if (customClickComment) {
+      customClickComment();
+    } else {
+      setPostDetail(post);
+      setShowPostDetail(true);
     }
   };
 
@@ -32,7 +41,7 @@ export const Post = ({ post, fullContent, customClickComment, children }: IPostP
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-3">
           <Avatar url={creator.avatarUrl} />
-          <span className="font-bold text-xl text-sky-700">{creator.name}</span>
+          <span className="font-bold text-xl">{creator.name}</span>
         </div>
 
         <div className="flex items-center gap-x-1">
@@ -90,9 +99,7 @@ export const Post = ({ post, fullContent, customClickComment, children }: IPostP
           Likes
         </button>
 
-        <button
-          onClick={() => (customClickComment ? customClickComment() : setPostDetail(post))}
-          className="grow flex justify-center items-center gap-x-2 cursor-pointer py-2 rounded hover:bg-neutral-100 font-bold">
+        <button onClick={() => handleComment()} className="grow flex justify-center items-center gap-x-2 cursor-pointer py-2 rounded hover:bg-neutral-100 font-bold">
           <GoComment className="size-6" />
           Comment
         </button>

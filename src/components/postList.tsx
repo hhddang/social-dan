@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Post } from "@/components";
+import { Post, PostDetail } from "@/components";
 import { IGetPostsResponse } from "@/types";
 import { usePostStore } from "@/lib/stores/postStore";
 import { useQuery } from "@tanstack/react-query";
@@ -61,6 +61,8 @@ export const PostList = () => {
       <div ref={loadingRef} className="w-full text-center">
         <span className="loading loading-spinner loading-xl"></span>
       </div>
+
+      <PostDetail />
     </>
   );
 };
